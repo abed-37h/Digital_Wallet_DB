@@ -2,7 +2,7 @@ USE DigitalWalletDB;
 GO
 
 CREATE TABLE [User](
-    user_id INT IDENTITY(1, 1),
+    user_id INT IDENTITY(1, 1) NOT NULL,
     username VARCHAR(50) NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(100) NOT NULL,
@@ -11,13 +11,13 @@ CREATE TABLE [User](
 );
 
 CREATE TABLE Country(
-    iso_alpha2 CHAR(2),
+    iso_alpha2 CHAR(2) NOT NULL,
     name VARCHAR(100) NOT NULL,
     nationality VARCHAR(100)
 );
 
 CREATE TABLE Person(
-    person_id INT IDENTITY(1, 1),
+    person_id INT IDENTITY(1, 1) NOT NULL,
     user_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     middle_name VARCHAR(50),
@@ -28,7 +28,7 @@ CREATE TABLE Person(
 );
 
 CREATE TABLE Business(
-    business_id INT IDENTITY(1, 1),
+    business_id INT IDENTITY(1, 1) NOT NULL,
     user_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     legal_name VARCHAR(150),
@@ -39,14 +39,14 @@ CREATE TABLE Business(
 );
 
 CREATE TABLE Agent(
-    agent_id INT IDENTITY(1, 1),
+    agent_id INT IDENTITY(1, 1) NOT NULL,
     user_id INT NOT NULL,
     display_name VARCHAR(100) NOT NULL,
     status VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE AuthMethod(
-    method_id INT IDENTITY(1, 1),
+    method_id INT IDENTITY(1, 1) NOT NULL,
     user_id INT NOT NULL,
     method_type VARCHAR(20) NOT NULL,
     description VARCHAR(MAX),
@@ -54,7 +54,7 @@ CREATE TABLE AuthMethod(
 );
 
 CREATE TABLE KYCRecord(
-    record_id INT IDENTITY(1, 1),
+    record_id INT IDENTITY(1, 1) NOT NULL,
     user_id INT NOT NULL,
     document_type VARCHAR(30) NOT NULL,
     document_number VARCHAR(50) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE KYCRecord(
 );
 
 CREATE TABLE Account(
-    account_number VARCHAR(30),
+    account_number VARCHAR(30) NOT NULL,
     user_id INT NOT NULL,
     type VARCHAR(20) NOT NULL,
     balance DECIMAL(15, 2) NOT NULL,
@@ -75,12 +75,12 @@ CREATE TABLE Account(
 );
 
 CREATE TABLE [Transaction](
-    transaction_id INT IDENTITY(1, 1),
+    transaction_id INT IDENTITY(1, 1) NOT NULL,
     source_account VARCHAR(30) NOT NULL,
     destination_account VARCHAR(30) NOT NULL,
     type VARCHAR(20) NOT NULL,
     amount DECIMAL(15, 2) NOT NULL,
-    currency CHAR(2) NOT NULL,
+    currency CHAR(3) NOT NULL,
     time DATETIME2 NOT NULL,
     status VARCHAR(20) NOT NULL,
     description VARCHAR(MAX),
@@ -90,7 +90,7 @@ CREATE TABLE [Transaction](
 );
 
 CREATE TABLE Fee(
-    fee_id INT IDENTITY(1, 1),
+    fee_id INT IDENTITY(1, 1) NOT NULL,
     operation_type VARCHAR(20) NOT NULL,
     payer_type VARCHAR(20) NOT NULL,
     fee_type VARCHAR(20) NOT NULL,

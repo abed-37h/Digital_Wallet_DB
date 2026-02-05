@@ -1,7 +1,7 @@
 USE DigitalWalletDB;
 GO
 
-CREATE VIEW vw_UserAccountOverview AS
+CREATE OR ALTER VIEW vw_UserAccountOverview AS
     SELECT
         u.user_id,
         u.username,
@@ -9,7 +9,8 @@ CREATE VIEW vw_UserAccountOverview AS
         u.email,
         u.address,
         a.account_number,
-        CONCAT(a.balance, ' ', a.currency) AS balance,
+        a.balance,
+        a.currency,
         a.status,
         a.daily_limit
     FROM Account a
@@ -17,7 +18,7 @@ CREATE VIEW vw_UserAccountOverview AS
     ON a.user_id = u.user_id;
 GO
 
-CREATE VIEW vw_PersonAccountOverview AS
+CREATE OR ALTER VIEW vw_PersonAccountOverview AS
     SELECT
         u.user_id,
         a.account_number,
@@ -29,19 +30,20 @@ CREATE VIEW vw_PersonAccountOverview AS
         c.nationality,
         pu.national_id,
         u.address,
-        CONCAT(a.balance, ' ', a.currency) AS balance,
+        a.balance,
+        a.currency,
         a.status,
         a.daily_limit
     FROM Account a
     LEFT JOIN [User] u
     ON a.user_id = u.user_id
     JOIN Person pu
-    ON pu.user_id = user.user_id
+    ON pu.user_id = u.user_id
     LEFT JOIN Country c
     ON pu.nationality = c.iso_alpha2;
 GO
 
-CREATE VIEW vw_BusinessAccountOverview AS
+CREATE OR ALTER VIEW vw_BusinessAccountOverview AS
     SELECT
         u.user_id,
         a.account_number,
@@ -51,23 +53,24 @@ CREATE VIEW vw_BusinessAccountOverview AS
         bu.registration_number,
         u.phone_number,
         u.email,
-        c.country,
+        c.name AS country,
         bu.category,
         bu.status AS business_status,
         u.address,
-        CONCAT(a.balance, ' ', a.currency) AS balance,
+        a.balance,
+        a.currency,
         a.status,
         a.daily_limit
     FROM Account a
     LEFT JOIN [User] u
     ON a.user_id = u.user_id
     JOIN Business bu
-    ON bu.user_id = user.user_id
+    ON bu.user_id = u.user_id
     LEFT JOIN Country c
-    ON bu.nationality = c.iso_alpha2;
+    ON bu.country = c.iso_alpha2;
 GO
 
-CREATE VIEW vw_AgentAccountOverview AS
+CREATE OR ALTER VIEW vw_AgentAccountOverview AS
     SELECT
         u.user_id,
         a.account_number,
@@ -77,18 +80,19 @@ CREATE VIEW vw_AgentAccountOverview AS
         u.email,
         au.status AS agent_status,
         u.address,
-        CONCAT(a.balance, ' ', a.currency) AS balance,
+        a.balance,
+        a.currency,
         a.status,
         a.daily_limit
     FROM Account a
     LEFT JOIN [User] u
     ON a.user_id = u.user_id
     JOIN Agent au
-    ON pu.user_id = user.user_id;
+    ON au.user_id = u.user_id;
 GO
 
-CREATE VIEW vw_TransactionDetails AS
-    SELECT
+CREATE OR ALTER VIEW vw_TransactionDetails AS
+    SELECT TOP (100) PERCENT
         t.transaction_id,
         t.time,
         t.type,

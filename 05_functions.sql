@@ -1,4 +1,7 @@
-CREATE FUNCTION dbo.fn_GetUserRecentTransactions(@user_id INT, @limit INT = 30)
+USE DigitalWalletDB;
+GO
+
+CREATE OR ALTER FUNCTION dbo.fn_GetUserRecentTransactions(@user_id INT, @limit INT = 30)
     RETURNS TABLE
 AS
     RETURN (
@@ -7,7 +10,7 @@ AS
     );
 GO
 
-CREATE FUNCTION dbo.fn_GetUserBalance(@user_id INT)
+CREATE OR ALTER FUNCTION dbo.fn_GetUserBalance(@user_id INT)
     RETURNS TABLE
 AS
     RETURN (
@@ -27,7 +30,7 @@ AS
     );
 GO
 
-CREATE FUNCTION dbo.fn_GetAccountTransactions(@account_number VARCHAR(50))
+CREATE OR ALTER FUNCTION dbo.fn_GetAccountTransactions(@account_number VARCHAR(50))
     RETURNS TABLE
 AS
     RETURN (
@@ -36,7 +39,7 @@ AS
     );
 GO
 
-CREATE FUNCTION dbo.fn_CalculateFee(
+CREATE OR ALTER FUNCTION dbo.fn_CalculateFee(
     @amount DECIMAL(18,2), 
     @operation_type VARCHAR(20), 
     @payer_type VARCHAR(20)
@@ -59,7 +62,7 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION dbo.fn_GetUserFullName(@user_id INT)
+CREATE OR ALTER FUNCTION dbo.fn_GetUserFullName(@user_id INT)
 RETURNS NVARCHAR(255)
 AS
 BEGIN

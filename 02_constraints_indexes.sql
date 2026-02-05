@@ -159,6 +159,27 @@ ALTER TABLE Account
     ADD CONSTRAINT CK_Account_daily_limit
     CHECK (daily_limit >= 0);
 
+-- Fee Constraints --
+
+ALTER TABLE Fee
+    ADD CONSTRAINT PK_Fee PRIMARY KEY (fee_id);
+
+ALTER TABLE Fee
+    ADD CONSTRAINT CK_Fee_operation_type
+    CHECK (operation_type IN ('transfer', 'deposit', 'withdraw', 'vendor_payment'));
+
+ALTER TABLE Fee
+    ADD CONSTRAINT CK_Fee_payer_type
+    CHECK (payer_type IN ('sender', 'receiver', 'business', 'agent', 'shared'));
+
+ALTER TABLE Fee
+    ADD CONSTRAINT CK_Fee_fee_type
+    CHECK (fee_type IN ('fixed', 'percentage'));
+
+ALTER TABLE Fee
+    ADD CONSTRAINT CK_Fee_fee_value
+    CHECK (fee_value >= 0);
+
 -- Transactions Constraints --
 
 ALTER TABLE [Transaction]
@@ -195,27 +216,6 @@ ALTER TABLE [Transaction]
 ALTER TABLE [Transaction]
     ADD CONSTRAINT CK_Transaction_diff_accounts
     CHECK (source_account <> destination_account);
-
--- Fee Constraints --
-
-ALTER TABLE Fee
-    ADD CONSTRAINT PK_Fee PRIMARY KEY (fee_id);
-
-ALTER TABLE Fee
-    ADD CONSTRAINT CK_Fee_operation_type
-    CHECK (operation_type IN ('transfer', 'deposit', 'withdraw', 'vendor_payment'));
-
-ALTER TABLE Fee
-    ADD CONSTRAINT CK_Fee_payer_type
-    CHECK (payer_type IN ('sender', 'receiver', 'business', 'agent', 'shared'));
-
-ALTER TABLE Fee
-    ADD CONSTRAINT CK_Fee_fee_type
-    CHECK (fee_type IN ('fixed', 'percentage'));
-
-ALTER TABLE Fee
-    ADD CONSTRAINT CK_Fee_fee_value
-    CHECK (fee_value >= 0);
 
 
 -- INDEXES --
